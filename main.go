@@ -25,8 +25,8 @@ var (
 func main() {
 	app := fiber.New()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
+	app.Get("/posts", func(c *fiber.Ctx) error {
+		return c.JSON(postList)
 	})
 
 	app.Get("/posts/:id", func(c *fiber.Ctx) error {
@@ -52,11 +52,60 @@ func main() {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"message": err.Error(),
 			})
-
 		}
 		newPost.Id = rand.Intn(1000)
 		postList = append(postList, *newPost)
 		return c.JSON(postList)
 	})
+
+	app.Delete("/posts/:id", func(c *fiber.Ctx) error {
+		id := c.Params("id")
+		intId, err := strconv.Atoi(id)
+		if err != nil {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+				"message": "Please enter a integer like parameter !",
+			})
+		}
+		for index, post := range postList {
+			if post.Id == intId {
+				postList = append(postList[:index], postList[index+1:]...)
+				return c.SendStatus(fiber.StatusNoContent)
+			}
+		}
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"message": "Post not found to delete it",
+		})
+	})
+
+	app.Put("/posts/:id", func(c *fiber.Ctx) error {
+		id := c.Params("id")
+		intId, err := strconv.Atoi(id)
+		newPost := new(Post)
+		if err != nil {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+				"message": "Please enter a integer like parameter",
+			})
+		}
+
+		for index, post := range postList {
+			if intId == post.Id {
+				if err := c.BodyParser(newPost); err != nil {
+					return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+						"message": err.Error(),
+					})
+				}
+				postList = append(postList[:index], postList[index+1:]...)
+				newPost.Id = intId
+				postList = append(postList, *newPost)
+				c.SendStatus(fiber.StatusCreated)
+				return c.JSON(postList)
+			}
+		}
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"message": "Post not found to update it !",
+		})
+
+	})
+
 	log.Fatal(app.Listen(":3000"))
 }
