@@ -1,42 +1,16 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	"os"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
-)
-
-type Post struct {
-	Id        int    `json:"id" gorm:"primaryKey"`
-	Title     string `json:"title"`
-	Content   string `json:"content"`
-	Published bool   `json:"published"`
-}
-
-var (
-	postList = []Post{
-		{Id: 1, Title: "title of post 1", Content: "small content of post 1 and some description", Published: true},
-		{Id: 2, Title: "title of post 2", Content: "small content of post 2 and some description", Published: true},
-	}
 )
 
 func main() {
 	app := fiber.New()
 
-	dsn := "host=localhost user=postgres password=Bielem@*01 dbname=fiber_bd port=5432 sslmode=disable TimeZone=UTC"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-
-	if err != nil {
-		fmt.Printf("Error to connect to our databse : %v\n", err)
-		os.Exit(1)
-	}
-
-	fmt.Printf("connection to the database ok .... %v", db)
+	db := Connection()
 
 	app.Get("/posts", func(c *fiber.Ctx) error {
 		var post []Post
