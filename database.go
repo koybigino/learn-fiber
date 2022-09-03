@@ -20,5 +20,6 @@ func Connection() *gorm.DB {
 
 	fmt.Printf("connection to the database ok .... %v", db)
 
+	db.AutoMigrate(&Post{})
 	return db
 }
