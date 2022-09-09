@@ -1,7 +1,8 @@
-package main
+package databases
 
 import (
 	"fmt"
+	"github/koybigino/getting-started-fiber/models"
 	"os"
 
 	"gorm.io/driver/postgres"
@@ -20,6 +21,6 @@ func Connection() *gorm.DB {
 
 	fmt.Printf("connection to the database ok .... %v", db)
 
-	db.AutoMigrate(&Post{})
+	db.AutoMigrate(&models.Post{}, &models.User{})
 	return db
 }
