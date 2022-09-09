@@ -11,9 +11,10 @@ import (
 
 var db = databases.Connection()
 
-func RouterUser(app *fiber.App) {
-	app.Get("/users/:id", GetUser)
-	app.Post("/users", CreateUser)
+func RouterUser(router *fiber.App) {
+	u := router.Group("/users/")
+	u.Get("id", GetUser)
+	u.Post("", CreateUser)
 }
 
 func CreateUser(c *fiber.Ctx) error {

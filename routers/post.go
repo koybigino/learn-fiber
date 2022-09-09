@@ -7,12 +7,13 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func RouterPost(app *fiber.App) {
-	app.Get("/posts", GetAllPost)
-	app.Get("/posts/:id", GetPost)
-	app.Post("/posts", CreatePost)
-	app.Delete("/posts/:id", DeletePost)
-	app.Put("/posts/:id", UpdatePost)
+func RouterPost(router *fiber.App) {
+	p := router.Group("/posts/")
+	p.Get("", GetAllPost)
+	p.Get("id", GetPost)
+	p.Post("", CreatePost)
+	p.Delete(":id", DeletePost)
+	p.Put(":id", UpdatePost)
 }
 
 func GetAllPost(c *fiber.Ctx) error {
