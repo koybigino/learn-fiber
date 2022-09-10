@@ -155,3 +155,13 @@
 18:34:33 Deploy to heroku
 18:49:10 Failing tests in pipeline
 18:52:18 Deploy to Ubuntu
+
+
+En architecture informatique, un middleware ou intergiciel est un logiciel tiers qui crée un réseau d'échange d'informations entre différentes applications informatiques
+
+Présentation
+Un middleware est un logiciel qui fournit aux applications des fonctionnalités et des services communs que le système d'exploitation n'offre pas. La gestion des données, les services d'application, la messagerie, l'authentification et la gestion des API sont des services communément gérés par les solutions de middleware.
+
+Un middleware permet d'améliorer l'efficacité des développeurs qui créent les applications. Il joue le rôle de lien entre les applications, les données et les utilisateurs.
+
+Pour les entreprises qui disposent d'environnements multicloud et conteneurisés, un middleware peut assurer la rentabilité du développement et de l'exécution des applications à grande échelle.

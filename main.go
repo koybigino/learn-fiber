@@ -12,6 +12,7 @@ func main() {
 
 	routers.RouterPost(app)
 	routers.RouterUser(app)
+	routers.RouterAuth(app)
 
 	log.Fatal(app.Listen(":3000"))
 }

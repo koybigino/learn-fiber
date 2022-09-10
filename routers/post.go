@@ -10,7 +10,7 @@ import (
 func RouterPost(router *fiber.App) {
 	p := router.Group("/posts/")
 	p.Get("", GetAllPost)
-	p.Get("id", GetPost)
+	p.Get(":id", GetPost)
 	p.Post("", CreatePost)
 	p.Delete(":id", DeletePost)
 	p.Put(":id", UpdatePost)

@@ -13,7 +13,7 @@ var db = databases.Connection()
 
 func RouterUser(router *fiber.App) {
 	u := router.Group("/users/")
-	u.Get("id", GetUser)
+	u.Get(":id", GetUser)
 	u.Post("", CreateUser)
 }
 
