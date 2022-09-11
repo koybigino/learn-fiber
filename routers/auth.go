@@ -14,27 +14,27 @@ func RouterAuth(router *fiber.App) {
 
 func Login(c *fiber.Ctx) error {
 	user := new(models.User)
-	user1 := new(models.User)
+	body := new(models.User)
 
-	if err := c.BodyParser(user1); err != nil {
+	if err := c.BodyParser(body); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Invalid credentials",
 		})
 	}
-	e := db.Where("email = ?", string(user1.Email)).First(user).Error
+	e := db.Where("email = ?", string(body.Email)).First(user).Error
 	if e != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"error": e.Error(),
 		})
 	}
 
-	if utils.Verify(user1.Password, user.Password) != true {
+	if utils.Verify(body.Password, user.Password) != true {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Invalid credentials",
 		})
 	}
 
-	token := oauth.CreateAccessToken(user.Email)
+	token := oauth.CreateAccessToken()
 
 	if token == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -44,6 +44,6 @@ func Login(c *fiber.Ctx) error {
 
 	return c.JSON(fiber.Map{
 		"token":      token,
-		"token_type": "bearer",
+		"token_type": "Bearer",
 	})
 }

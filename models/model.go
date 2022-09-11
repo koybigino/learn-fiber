@@ -20,3 +20,12 @@ type User struct {
 	Password   string    `json:"password" gorm:"unique;not null"`
 	Created_at time.Time `json:"created_at" gorm:"autoCreateTime"`
 }
+
+// type Token struct {
+// 	AccessToken string `json:"access_token" gorm:"unique"`
+// 	TokenType   string `json:"token_type"`
+// }
+
+// type TokenData struct {
+// 	ID int `json:"id" gorm:"primaryKey"`
+// }

@@ -6,16 +6,15 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-func CreateAccessToken(name string) string {
-	//Create the Claims
-	claims := jwt.MapClaims{
-		"name":  name,
-		"admin": true,
-		"exp":   time.Now().Add(time.Hour * 72).Unix(),
-	}
+func CreateAccessToken() string {
 
 	// Create token
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	token := jwt.New(jwt.SigningMethodHS256)
+
+	//Create the Claims
+	claims := token.Claims.(jwt.MapClaims)
+	claims["sub"] = "1"
+	claims["exp"] = time.Now().Add(time.Hour * 24 * 7)
 
 	// Generate encoded token and send it as response.
 	t, err := token.SignedString([]byte("secret"))
@@ -25,3 +24,11 @@ func CreateAccessToken(name string) string {
 
 	return t
 }
+
+// func VerifyAccessToken(c *fiber.Ctx) string {
+// 	user := c.Locals("user").(*jwt.Token)
+// 	claims := user.Claims.(jwt.MapClaims)
+// 	email := claims["sub"].(string)
+
+// 	return email
+// }
