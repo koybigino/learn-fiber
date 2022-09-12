@@ -14,7 +14,7 @@ func CreateAccessToken() string {
 	//Create the Claims
 	claims := token.Claims.(jwt.MapClaims)
 	claims["sub"] = "1"
-	claims["exp"] = time.Now().Add(time.Hour * 24 * 7)
+	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
 
 	// Generate encoded token and send it as response.
 	t, err := token.SignedString([]byte("secret"))

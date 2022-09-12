@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"github/koybigino/getting-started-fiber/middleware"
 	"github/koybigino/getting-started-fiber/models"
 	"strconv"
 
@@ -8,7 +9,7 @@ import (
 )
 
 func RouterPost(router *fiber.App) {
-	p := router.Group("/posts/")
+	p := router.Group("/posts/", middleware.AuthRequired())
 	p.Get("", GetAllPost)
 	p.Get(":id", GetPost)
 	p.Post("", CreatePost)

@@ -11,6 +11,7 @@ type Post struct {
 	Title     string `json:"title"`
 	Content   string `json:"content"`
 	Published bool   `json:"published"`
+	UserId    int    `json:"user_id" gorm:"not null"`
 	gorm.Model
 }
 
@@ -19,6 +20,7 @@ type User struct {
 	Email      string    `json:"email" gorm:"unique;not null" validate:"email"`
 	Password   string    `json:"password" gorm:"unique;not null"`
 	Created_at time.Time `json:"created_at" gorm:"autoCreateTime"`
+	Posts      []Post    `json:"posts" gorm:"foreignKey:UserId;constraint:OnDelete:CASCADE"`
 }
 
 // type Token struct {

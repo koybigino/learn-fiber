@@ -2,6 +2,7 @@ package routers
 
 import (
 	"github/koybigino/getting-started-fiber/databases"
+	"github/koybigino/getting-started-fiber/middleware"
 	"github/koybigino/getting-started-fiber/models"
 	"github/koybigino/getting-started-fiber/utils"
 	"strconv"
@@ -12,7 +13,7 @@ import (
 var db = databases.Connection()
 
 func RouterUser(router *fiber.App) {
-	u := router.Group("/users/")
+	u := router.Group("/users/", middleware.AuthRequired())
 	u.Get(":id", GetUser)
 	u.Post("", CreateUser)
 }
