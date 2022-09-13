@@ -1,6 +1,7 @@
 package oauth
 
 import (
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -17,7 +18,7 @@ func CreateAccessToken() string {
 	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
 
 	// Generate encoded token and send it as response.
-	t, err := token.SignedString([]byte("secret"))
+	t, err := token.SignedString([]byte(os.Getenv("SECRET_WEB_KEY")))
 	if err != nil {
 		return ""
 	}

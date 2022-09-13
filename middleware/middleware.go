@@ -1,6 +1,8 @@
 package middleware
 
 import (
+	"os"
+
 	jwtware "github.com/gofiber/jwt/v3"
 
 	"github.com/gofiber/fiber/v2"
@@ -13,6 +15,6 @@ func AuthRequired() func(c *fiber.Ctx) error {
 				"error": "Unauthorized",
 			})
 		},
-		SigningKey: []byte("secret"),
+		SigningKey: []byte(os.Getenv("SECRET_WEB_KEY")),
 	})
 }
