@@ -3,24 +3,17 @@ package routers
 import (
 	"github/koybigino/getting-started-fiber/models"
 	"github/koybigino/getting-started-fiber/oauth"
+	"github/koybigino/getting-started-fiber/session"
 	"github/koybigino/getting-started-fiber/utils"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/session"
 )
-
-var store = session.New()
 
 func RouterAuth(router *fiber.App) {
 	router.Post("/login", Login)
 }
 
 func Login(c *fiber.Ctx) error {
-
-	sess, err := store.Get(c)
-	if err != nil {
-		panic(err)
-	}
 
 	user := new(models.User)
 	body := new(models.User)
@@ -38,7 +31,12 @@ func Login(c *fiber.Ctx) error {
 	}
 
 	//Store the current user in the session
-	sess.Set("current_user", user)
+	sess := session.CreateNewSession(c)
+	sess.Set("current_user_id", user.Id)
+	sess.Set("current_user_email", user.Email)
+	if err := sess.Save(); err != nil {
+		panic(err.Error())
+	}
 
 	if utils.Verify(body.Password, user.Password) != true {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
