@@ -42,13 +42,13 @@ func CreateUser(c *fiber.Ctx) error {
 	err := db.Create(newUser).Error
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Your post wasn't been created !",
+			"message": "Your user wasn't been created !",
 			"error":   err.Error(),
 		})
 	}
 
 	return c.JSON(fiber.Map{
-		"message": "Your post was been created !",
+		"message": "Your user was been created !",
 		"data":    newUser,
 	})
 }

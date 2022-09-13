@@ -17,6 +17,7 @@ func main() {
 
 	routers.RouterPost(app)
 	routers.RouterUser(app)
+	routers.RouterVote(app)
 
 	log.Fatal(app.Listen(":3000"))
 }

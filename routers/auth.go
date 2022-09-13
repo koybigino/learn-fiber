@@ -4,7 +4,6 @@ import (
 	"github/koybigino/getting-started-fiber/models"
 	"github/koybigino/getting-started-fiber/oauth"
 	"github/koybigino/getting-started-fiber/session"
-	"github/koybigino/getting-started-fiber/utils"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -38,11 +37,17 @@ func Login(c *fiber.Ctx) error {
 		panic(err.Error())
 	}
 
-	if utils.Verify(body.Password, user.Password) != true {
+	if body.Password != user.Password {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Invalid credentials",
 		})
 	}
+
+	// if utils.Verify(body.Password, user.Password) != true {
+	// 	return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+	// 		"message": "Invalid credentials",
+	// 	})
+	// }
 
 	token := oauth.CreateAccessToken()
 

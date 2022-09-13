@@ -76,8 +76,8 @@ func CreatePost(c *fiber.Ctx) error {
 func DeletePost(c *fiber.Ctx) error {
 	id := c.Params("id")
 	post := new(models.Post)
-	intId, err := strconv.Atoi(id)
 	sess := session.CreateNewSession(c)
+	intId, err := strconv.Atoi(id)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"message": "Please enter a integer like parameter !",
