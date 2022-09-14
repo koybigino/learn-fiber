@@ -62,7 +62,8 @@ func GetUser(c *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
-	db.Preload("Posts1").Preload("Votes").Find(user, intId)
+
+	db.Preload("Posts").Preload("Votes").Find(user, intId)
 	// e := db.First(user, intId).Error
 	// if e != nil {
 	// 	return c.Status(fiber.StatusNotFound).JSON(fiber.Map{

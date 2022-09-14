@@ -12,7 +12,7 @@ type User struct {
 	Password   string    `json:"password" gorm:"unique;not null"`
 	Created_at time.Time `json:"created_at" gorm:"autoCreateTime"`
 	Posts      []Post    `json:"posts" gorm:"foreignKey:UserId;constraint:OnDelete:CASCADE;"`
-	Posts1     []Post    `gorm:"many2many:votes"`
+	Votes      []Post    `gorm:"many2many:votes"`
 }
 type Post struct {
 	Id        int    `json:"id" gorm:"primaryKey"`

@@ -20,8 +20,19 @@ func RouterPost(router *fiber.App) {
 
 func GetAllPost(c *fiber.Ctx) error {
 
+	type Query struct {
+		Limit  int `query:"limit"`
+		Offset int `query:"offset"`
+	}
+
+	q := new(Query)
+	if err := c.QueryParser(q); err != nil {
+		return err
+	}
+
 	var post []models.Post
-	result := db.Find(&post).Limit(10)
+	count := new(int64)
+	result := db.Find(&post).Count(count)
 	if result.Error != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"message": "Error to get all elements of the table",
@@ -30,6 +41,8 @@ func GetAllPost(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"message": "All post are getting well",
 		"data":    post,
+		"count":   count,
+		"param":   q,
 	})
 }
 
