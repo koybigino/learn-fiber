@@ -13,8 +13,8 @@ import (
 var db = databases.Connection()
 
 func RouterUser(router *fiber.App) {
-	u := router.Group("/users/", middleware.AuthRequired())
-	u.Get(":id", GetUser)
+	u := router.Group("/users/")
+	u.Get(":id", GetUser, middleware.AuthRequired())
 	u.Post("", CreateUser)
 }
 
@@ -62,11 +62,12 @@ func GetUser(c *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
-	e := db.First(user, intId).Error
-	if e != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"error": e.Error(),
-		})
-	}
+	db.Preload("Posts1").Preload("Votes").Find(user, intId)
+	// e := db.First(user, intId).Error
+	// if e != nil {
+	// 	return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+	// 		"error": e.Error(),
+	// 	})
+	// }
 	return c.JSON(user)
 }

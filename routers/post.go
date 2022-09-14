@@ -42,29 +42,36 @@ func GetPost(c *fiber.Ctx) error {
 			"message": "Please enter a integer like parameter !",
 		})
 	}
-	e := db.First(post, intId).Error
-	if e != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"message": "post not found !",
-			"error":   e,
-		})
-	}
+	// e := db.First(post, intId).Error
+	// if e != nil {
+	// 	return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+	// 		"message": "post not found !",
+	// 		"error":   e,
+	// 	})
+	// }
+	db.Preload("Votes").First(post, intId)
+	// db.Joins("Company").Joins("Manager").Joins("Account").First(&user, "users.name = ?", "jinzhu")
+	// db.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN ?", []int{1,2,3,4,5})
+
 	return c.JSON(post)
 }
 
 func CreatePost(c *fiber.Ctx) error {
 	newPost := new(models.Post)
+	sess := session.CreateNewSession(c)
+	currentUserId := sess.Get("current_user_id")
 
 	if err := c.BodyParser(newPost); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": err.Error(),
 		})
 	}
+	newPost.UserId = currentUserId.(int)
 	err := db.Create(newPost).Error
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Your post wasn't been created !",
-			"error":   err,
+			"error":   err.Error(),
 		})
 	}
 	return c.JSON(fiber.Map{
@@ -99,7 +106,6 @@ func DeletePost(c *fiber.Ctx) error {
 			"error": "Unauthorized",
 		})
 	}
-
 	db.Delete(post, intId)
 	return c.SendStatus(fiber.StatusNoContent)
 }

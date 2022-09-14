@@ -6,21 +6,22 @@ import (
 	"gorm.io/gorm"
 )
 
-type Post struct {
-	Id        int    `json:"id" gorm:"primaryKey"`
-	Title     string `json:"title"`
-	Content   string `json:"content"`
-	Published bool   `json:"published"`
-	UserId    int    `json:"user_id" gorm:"not null"`
-	Users     []User `json:"users" gorm:"many2many:votes"`
-	gorm.Model
-}
 type User struct {
 	Id         int       `json:"id" gorm:"primaryKey;not null"`
 	Email      string    `json:"email" gorm:"unique;not null" validate:"email"`
 	Password   string    `json:"password" gorm:"unique;not null"`
 	Created_at time.Time `json:"created_at" gorm:"autoCreateTime"`
 	Posts      []Post    `json:"posts" gorm:"foreignKey:UserId;constraint:OnDelete:CASCADE;"`
+	Posts1     []Post    `gorm:"many2many:votes"`
+}
+type Post struct {
+	Id        int    `json:"id" gorm:"primaryKey"`
+	Title     string `json:"title"`
+	Content   string `json:"content"`
+	Published bool   `json:"published"`
+	UserId    int    `json:"user_id" gorm:"not null"`
+	Votes     []Vote `json:"votes"`
+	gorm.Model
 }
 
 type Vote struct {

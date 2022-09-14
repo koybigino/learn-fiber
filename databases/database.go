@@ -30,6 +30,6 @@ func Connection() *gorm.DB {
 
 	fmt.Printf("connection to the database ok .... %v", db)
 
-	db.AutoMigrate(&models.Post{}, &models.User{})
+	db.AutoMigrate(&models.User{}, &models.Post{})
 	return db
 }
