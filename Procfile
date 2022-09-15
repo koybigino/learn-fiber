@@ -1,1 +1,1 @@
-web: tmp/main --host=0.0.0.0 --port=${PORT:-5000}
+web: ./bin/getting-started-fiber --host=0.0.0.0 --port=${PORT:-5000}
