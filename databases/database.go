@@ -9,6 +9,7 @@ import (
 	"strconv"
 
 	// "github.com/joho/godotenv"
+	_ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/postgres"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -19,10 +20,13 @@ func Connection() *gorm.DB {
 	// 	log.Fatalf("Some error occured. Err: %s", err)
 	// }
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
-	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=disable TimeZone=UTC", os.Getenv("DB_HOSTNAME"), os.Getenv("DB_USERNAME"), os.Getenv("PASSWORD"), os.Getenv("DB_NAME"), port)
+	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=disable", os.Getenv("DB_HOSTNAME"), os.Getenv("DB_USERNAME"), os.Getenv("PASSWORD"), os.Getenv("DB_NAME"), port)
 
 	// dsn := "host=localhost user=postgres password=Bielem@*01 dbname=fiber_bd port=5432 sslmode=disable TimeZone=UTC"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.New(postgres.Config{
+		DriverName: "cloudsqlpostgres",
+		DSN:        dsn,
+	}))
 
 	if err != nil {
 		fmt.Printf("Error to connect to our databse : %v\n", err)
