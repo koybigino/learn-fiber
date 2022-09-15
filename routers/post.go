@@ -20,6 +20,7 @@ func RouterPost(router *fiber.App) {
 
 func GetAllPost(c *fiber.Ctx) error {
 
+	// Recupérer les parametres d'une requette
 	type Query struct {
 		Limit  int `query:"limit"`
 		Offset int `query:"offset"`
