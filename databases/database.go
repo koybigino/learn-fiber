@@ -3,20 +3,21 @@ package databases
 import (
 	"fmt"
 	"github/koybigino/getting-started-fiber/models"
-	"log"
+
+	// "log"
 	"os"
 	"strconv"
 
-	"github.com/joho/godotenv"
+	// "github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 func Connection() *gorm.DB {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatalf("Some error occured. Err: %s", err)
-	}
+	// err := godotenv.Load(".env")
+	// if err != nil {
+	// 	log.Fatalf("Some error occured. Err: %s", err)
+	// }
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=disable TimeZone=UTC", os.Getenv("DB_HOSTNAME"), os.Getenv("DB_USERNAME"), os.Getenv("PASSWORD"), os.Getenv("DB_NAME"), port)
 
