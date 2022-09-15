@@ -6,7 +6,6 @@ import (
 
 	// "log"
 	"os"
-	"strconv"
 
 	// "github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
@@ -18,8 +17,8 @@ func Connection() *gorm.DB {
 	// if err != nil {
 	// 	log.Fatalf("Some error occured. Err: %s", err)
 	// }
-	port, _ := strconv.Atoi(os.Getenv("PORT"))
-	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=disable TimeZone=UTC", os.Getenv("DB_HOSTNAME"), os.Getenv("DB_USERNAME"), os.Getenv("PASSWORD"), os.Getenv("DB_NAME"), port)
+	// port, _ := strconv.Atoi(os.Getenv("PORT"))
+	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=disable TimeZone=UTC", os.Getenv("DB_HOSTNAME"), os.Getenv("DB_USERNAME"), os.Getenv("PASSWORD"), os.Getenv("DB_NAME"), 5432)
 
 	// dsn := "host=localhost user=postgres password=Bielem@*01 dbname=fiber_bd port=5432 sslmode=disable TimeZone=UTC"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
